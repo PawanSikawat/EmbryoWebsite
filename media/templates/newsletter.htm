@@ -1,0 +1,12 @@
+{% extends "standard.htm" %}
+
+{% block title %} Newsletters{% endblock %}
+
+{% block content %}
+
+<div class="current">Newsletter</div>
+<p>BITS Embryo publishes various newsletters on campus.<br />If you have an article which you would like to see published in the newsletters, send it to embryoclub[at]gmail.com</p>
+		{% for newsletter in newsletters %}
+		<p><a href = "{{MEDIA_URL}}{{newsletter.newsletter}}" target="_blank">{{newsletter.name}}</a></p>
+		{% endfor %}
+{% endblock %}

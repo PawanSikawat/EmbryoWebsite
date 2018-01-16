@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Description" content="Education, Exposure, Research, Online Lectures" />
+<meta name="Keywords" content="Online Lectures, Speakers, BITSAA, BITS Pilani" />
+<meta name="Author" content="Mayank Gupta, Niranjan Godebole, Hasil Sharma, Hrishikesh Mukte, Sumit Binnani, Gyan Prakash Verma" />
+<title>BITS Embryo:{% block title %}{% endblock %}</title>
+
+<link rel="shortcut icon" href="{{MEDIA_URL}}templates/images/favicon.ico"  />
+<link rel="stylesheet" type="text/css" media="screen" href="{{MEDIA_URL}}templates/css/base.css" />
+<script type="text/javascript" src="{{MEDIA_URL}}templates/jquery/easy_rotator.min.js"></script>
+<script src="{{MEDIA_URL}}templates/js/jquery.js"></script>
+<script src="{{MEDIA_URL}}templates/js/galleria-1.2.9.min.js"></script>
+<script defer src="{{MEDIA_URL}}templates/js/jquery.flexslider-min.js"></script>
+<script type="text/javascript">
+    $(window).load(function() {
+  $('.flexslider').flexslider({
+    animation: "slide"
+  });
+});
+</script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-38369262-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<link rel="stylesheet" href="{{MEDIA_URL}}templates/css/flexslider.css" type="text/css" media="screen" />
+</head>
+<body>
+<div class="header">
+        <div class="headercont">
+        <div class="logo"><a href="/">BITS Embryo</a></div>
+        <div class="menu">
+            <ul>
+                <li><a href="/"><span>Home</span></a></li>
+                <li><a href="/lectures"><span>Lectures</span></a></li>
+                <li><a href="/contribute"><span>Contribute</span></a></li>
+                <li><a href="/gallery"><span>Gallery</span></a></li>
+                <li><a href="/newsletters"><span>Newsletters</span></a></li>
+					 <!--<li><a href="/atmos/lectures/0"><span>ATMOS</span></a></li>-->
+                <li><a href="/about"><span>About us</span></a></li>
+                <li><a href="/theteam"><span>The Team</span></a></li>
+		<li><a href="https://bits-apogee.org/2017/aic/" target="_blank"><span>Apogee Innovation Challenge</span></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="bstrip"></div>
+    <div class="bar"></div>
+</div>
+<div class="content">
+
+<div class="flexslider" id="banner">
+
+<ul class="slides">
+{% autoescape off %}
+  {% for lectures in upcoming_lectures %}
+	<li class="lecture">
+	<img src="{{MEDIA_URL}}{{ lectures.photo|default:'Speakerphotos/noimage.jpg' }}" />
+	<div>
+		<h2>Upcoming Lecture</h2>
+        <a href="/lecturedetail_id={{ lectures.id }}">{{ lectures.topic }}</a><br />
+		by<br />
+			{{ lectures.presenter }}<br />
+			{{ lectures.date }}<br />Campus: {{ lectures.campus }}
+		</p>
+	</div></li>
+  {% endfor %}
+{% endautoescape %}
+{% for event in upcoming_events %}
+<li class="event">
+{% if event.image == 'events/default.jpg' %}
+<a href = "/" ><img src="{{MEDIA_URL}}{{ event.image }}" /></a>
+{% else %}
+<a href = "/event_id={{ event.id }}" ><img src="{{MEDIA_URL}}{{ event.image }}" /></a>
+{% endif %}
+</li>
+{% endfor %}
+</ul>
+</div>
+    <div class="text">
+{% autoescape off%}
+{% block content %}
+
+{% endblock %}
+{% endautoescape %}
+    </div>
+	<div class="flexslider" id="side">
+        <div><h2>Recent Lectures</h2></div>
+        <ul class="slides">
+        {% autoescape off %}
+        {% for lecture in recent_lectures %}
+        <li><img src="{{MEDIA_URL}}{{lecture.photo|default:'Speakerphotos/noimage.jpg' }}"/><div>
+        <a href="/lecturedetail_id={{lecture.id}}">{{lecture.topic}}</a><br />
+        by<br />
+        {{lecture.presenter}}<br />
+        {{lecture.date}}<br />Campus: {{lecture.campus}}</p></div></li>
+        {% endfor %}
+        {% endautoescape %}
+       </ul>
+	</div>
+<div class="footer">
+    &copy; Copyright {% now "Y" %} BITS Embryo | Contact us : embryoclub[at]gmail.com
+    <div class="bfoot"></div>
+</div>
+</div>
+</body>
+
+</html>

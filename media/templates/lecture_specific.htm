@@ -1,0 +1,32 @@
+{% extends "standard.htm" %}
+
+{% block title %} {{current_lecture.topic|striptags}}{% endblock %}
+
+{% block content %}
+    <div class="current">Lecture</div>
+    <table class="details">
+    <tr><td>
+     <h2>{{current_lecture.presenter}}</h2>
+     </td></tr>
+     <tr><td rowspan="5" width="220"><img src = "{{MEDIA_URL}}{{current_lecture.photo|default:'Speakerphotos/noimage.jpg'}}"></td>
+     <td>TOPIC:</td><td>{{current_lecture.topic}}</td></tr>
+     <td>DISCIPLINE:</td><td>{% for discipline in current_lecture.discipline.all %} {{ discipline }} {% endfor %}</td></tr>
+     <td>DATE:</td><td>{{current_lecture.date}}</td></tr>
+     <td>CAMPUS:</td><td>{{current_lecture.campus|safe}}</td></tr>
+     <td>VENUE:</td><td>{{current_lecture.venue}}</td></tr>
+     </table>
+     <table>
+     <tr><td><h3>ABSTRACT</h3>
+     <p>{{current_lecture.moreinfo}}</p>
+     {% if presenter_set.credentials or presenter_set.profile%}
+     <tr><td><h3>SPEAKER BIOGRAPHY</h3>
+     {% if presenter_set.credentials %}
+     <p>{{presenter_set.credentials}}</p>
+     {% endif %}
+     {% if presenter_set.profile %}
+     <p>{{presenter_set.profile}}</p>
+     {% endif %}
+     </td></tr>
+     {% endif %}
+     </table>
+{% endblock %}

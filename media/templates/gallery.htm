@@ -1,0 +1,30 @@
+{% extends "standard.htm" %}
+
+{% block title %} Gallery{% endblock %}
+
+{% block content %}
+
+    <div class="current">Gallery</div>
+     <p>BITS Embryo is now recruiting. Want to be a part of us? This video summarizes what we do at Embryo. See you at the interaction sessions!
+    <br />
+    <br />
+    <center><iframe title="YouTube video player" class="youtube-player" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/VhA_vMqbGX0" frameborder="0" allowFullScreen></iframe></center>
+    </p>
+    <p>
+	 <br />
+	 These are some of the photographs of ongoing talks, BITS Embryo Team and events conducted by BITS Embryo.
+	 </p>
+	 <div id="galleria" style="align:center;">
+	 <center>
+    <p align="center">This</p>
+    {% for image in all_images %}
+     <img src="{{MEDIA_URL}}{{image.photo.name}}" data-description="{{image.details}}" alt="Not Found" title="Description" width="" height="" />
+    {% endfor %}
+    </center>
+	 </div>
+    <script>
+    Galleria.loadTheme('{{MEDIA_URL}}templates/js/galleria.classic.min.js');
+    Galleria.run('#galleria');
+    </script>
+	 
+{% endblock %}

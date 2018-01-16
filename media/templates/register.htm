@@ -1,0 +1,25 @@
+{% extends "standard.htm" %}
+
+{% block title %} Register{% endblock %}
+
+{% block content %}
+
+<div class="current">Register</div>
+	<p>Dear Guest,<br />
+	Here is the Embryo Registration Form. We request you to kindly enter some basic information about yourself.The information entered by you would be purely used for Project Embryo activities and treated as confidential.</p>
+	<p>With best regards,<br />
+	Team Embryo.</p>
+        {% if form.errors %}
+        <h3 style="color: red;">
+            Please correct the error{{ form.errors|pluralize }} below.
+        </h3>
+    {% endif %}
+
+    <form action="" method="post">{% csrf_token %}
+        <table class="form">
+            {{ form.as_table }}
+        </table>
+        <p align="center"><input type="submit" value="Submit" /><input type="reset" value="Reset" /></p>
+    </form>
+    <p>* - Required</p>
+{% endblock %}

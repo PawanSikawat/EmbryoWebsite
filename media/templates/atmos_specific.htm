@@ -1,0 +1,23 @@
+{% extends "standard.htm" %}
+
+{% block title %} {{current_atmos.topic|striptags}}{% endblock %}
+
+{% block content %}
+    <div class="current">Details</div>
+     <table>
+	  <tr><td rowspan="5" width="220"><img height="230" width="250" src ="{{MEDIA_URL}}{{ current_atmos.photo|default:'Speakerphotos/noimage.jpg' }}"></td>
+     <td>DISCIPLINE: </td>
+	  <td> <p>{% for discipline in current_atmos.discipline.all %} {{ discipline }}<br /> {% endfor %}</p></td></tr>
+     <td>DATE AND TIME:</td><td> <p>{{current_atmos.date}}</p></td></tr>
+     <td>CAMPUS: </td><td><p>{{current_atmos.campus|safe}}</p></td></tr>
+     <td>VENUE: </td><td><p>{{current_atmos.venue}}</p></td></tr>
+	  
+	  </table>
+	 </table>
+	 <table>
+	      <tr><td><h3>ABSTRACT</h3>
+	      <p>{{current_atmos.moreinfo}}</p>
+	
+    </table>
+						     
+{% endblock %}

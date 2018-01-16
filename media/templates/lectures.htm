@@ -1,0 +1,69 @@
+{% extends "standard.htm" %}
+
+{% block title %} Lectures{% endblock %}
+
+{% block content %}
+    <div class="current">Lectures</div>
+    <form action = "/search_result/" method = "get">
+    <center>
+	 	<p>Search
+    	{% for bar in search_bar %}
+    		{{bar}}
+    	{% endfor %}
+    <input type='submit' value = 'search'></p>
+    </center>
+	 </form>
+    <form action="/discipline/" method="get">
+	<center>
+		<p>Show lectures only of the Discipline: <select name = "id" onchange="this.form.submit()">
+    {% if not current_did.id %}
+    <option value ="0"  selected="selected" >Select a Discipline
+    {% endif %}
+    </option>
+	{% for discipline in all_discipline %}
+    {% if discipline.id != 16  %}
+		 <option value ="{{discipline.id}}" {% if discipline.id == current_did.id %} selected="selected" {% endif %}>
+		 {{ discipline.stream }}
+		 </option>
+     {% endif %}
+	{% endfor %}
+	</select>
+    </p>
+   </center>
+	</form>
+	<div class="scroll" style="overflow=auto; height-max:600px;">
+        <p style="text-align:center;">
+    {% if i %}
+    <a href="/lectures/{{i|add:'-1'}}">Newer</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    {% endif %}
+    {% if next %}
+    <a href="/lectures/{{i|add:'1'}}">Older</a>
+    {% endif %}
+        </p>
+    <table class="list">
+    <colgroup><col width="368">
+ <col width="170">
+ <col width="112">
+</colgroup>
+    {% for lecture in all_lectures %}
+    <tr>
+    	{% autoescape off %}<td><p><a href="/lecturedetail_id={{lecture.id}}">{{ lecture.topic }}</a></p>{% endautoescape %}
+        <p>{{lecture.discipline.all|join:","}}
+    	{{ lecture.campus|safe }}-{{ lecture.venue }}, {{ lecture.date }}
+    	</p></td>
+		<td><p><b>{{ lecture.presenter }}</b></p></td>
+		<td align="center"><img src="{{MEDIA_URL}}{{ lecture.photo|default:'Speakerphotos/noimage.jpg' }}"></td>
+    </tr>
+    {% endfor %}
+</table>
+    <p style="text-align:center;">
+    {% if i %}
+    <a href="/lectures/{{i|add:'-1'}}">Newer</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    {% endif %}
+    {% if next %}
+    <a href="/lectures/{{i|add:'1'}}">Older</a>
+    {% endif %}
+        </p>
+</div>
+{% endblock %}
+

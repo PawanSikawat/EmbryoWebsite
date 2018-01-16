@@ -1,0 +1,11 @@
+{% extends "standard.htm" %}
+
+{% block title %} {{ writeup.name }}{% endblock %}
+
+{% block content %}
+    <div class="current">{{ writeup.name }}</div>
+    {% autoescape off %}
+    <p><!--<b><center>For ART 2015 Registration Please <a href = "eventregister/">Click Here.</a></center></b>-->
+	{{ writeup.content }}</p>
+    {% endautoescape %}
+{% endblock %}
