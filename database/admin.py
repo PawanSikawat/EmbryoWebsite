@@ -25,7 +25,7 @@ class FeedbackAdmin(admin.ModelAdmin):
 	search_fields = ('lecture', 'feedback', 'slides', 'video_link', 'poster')
 	
 class EventAdmin(admin.ModelAdmin):
-	list_display = ('__unicode__','allowed')
+	list_display = ('__str__','allowed')
 	
 class PageAdmin(admin.ModelAdmin):
 	list_display = ('name','link','content')
@@ -34,7 +34,7 @@ class SignupAdmin(admin.ModelAdmin):
 	list_display = ('first_name','last_name', 'email','talk_discipline', 'lect_topics')
 
 class GalleryAdmin(admin.ModelAdmin):
-        list_display = ('name','__unicode__','details','allowed')
+        list_display = ('name','__str__','details','allowed')
 
 class AtmosAdmin(admin.ModelAdmin):
 	list_display = ('id','topic','date')

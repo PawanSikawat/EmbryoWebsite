@@ -1,5 +1,5 @@
 import urllib
-import gdshortener
+# import gdshortener
 import base64
 def make_url(host,name,bits_id,phone_number,bits_email):
 	#s = gdshortener.ISGDShortener()

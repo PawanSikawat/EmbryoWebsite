@@ -1,17 +1,17 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from django.core.mail import send_mail,EmailMessage
 from database.models import Lecture,Event,Discipline, PagesContent, Gallery, AIC_Discipline,Document
 from database.views import *
 from embryo_website.forms import SearchForm,RegisterForm,EventForm,AIC_UploadForm,DocumentForm
 from django.http import HttpResponseRedirect, Http404, HttpResponse
-from embryo_website.spreadsheet import save_to_spreadsheet
+# from embryo_website.spreadsheet import save_to_spreadsheet
 from embryo_website.save_to_file import insertRow
 from embryo_website.urlgenerator import *
 import os
 import datetime
 import urllib
-import gdshortener
+# import gdshortener
 import base64
 def standard():
 	dictionary = {}
@@ -25,14 +25,14 @@ def event(request,event_id):
 	event_id = int(event_id)
 	dictionary = standard()
 	dictionary['event'] = Event.objects.get(id = event_id)
-	return render_to_response('event.htm',dictionary,context_instance=RequestContext(request))
+	return render(request,'event.htm',dictionary)
 
 def lecturedetail(request,lect_id):
 	lect_id = int(lect_id)
 	dictionary = standard()
 	dictionary['current_lecture'] = get_lecture(lect_id)
 	dictionary['presenter_set'] = get_presenter(lect_id)
-	return render_to_response('lecture_specific.htm',dictionary,context_instance=RequestContext(request))
+	return render(request,'lecture_specific.htm',dictionary)
 	
 def lectures(request,i = 0):
 	dictionary = standard()
@@ -46,7 +46,7 @@ def lectures(request,i = 0):
 		check_next=get_all_lectures()[(i+1)*5:(i+1)*5+10]
 		if len(check_next) > 0:
 			dictionary['next']=1;
-		return render_to_response('lectures.htm',dictionary,context_instance=RequestContext(request))
+		return render(request,'lectures.htm',dictionary)
 	else:
 		i=0
 		return HttpResponseRedirect('../')
@@ -62,7 +62,7 @@ def discipline(request):
 	dictionary['all_discipline'] = Discipline.objects.all()
 	dictionary['current_did'] = Discipline.objects.get(id= (int(search_item)))
 	#dictionary['drop_down_menu'] = DisciplineSearch()
-	return render_to_response('lectures.htm',dictionary,context_instance=RequestContext(request))
+	return render(request,'lectures.htm',dictionary)
 
 def rohan(request):
 		return HttpResponseRedirect('https://docs.google.com/spreadsheet/viewform?fromEmail=true&formkey=dFFHaUJlanRkRklUbm9uVFBIWWxScnc6MA')
@@ -74,7 +74,7 @@ def searching(request):
 	if not search_item :
 		return HttpResponseRedirect('../lectures')
 	dictionary['all_lectures'] = get_all_lectures(search_item)
-	return render_to_response('lectures.htm',dictionary,context_instance=RequestContext(request))
+	return render(request,'lectures.htm',dictionary)
 
 def gallery(request):
 	dictionary = standard()
@@ -87,17 +87,17 @@ def gallery(request):
 #	dictionary['all_images'] = image_filenames
 #	all_filenames = [str(x.photo.name.split('/')[-1]) for x in all_images_objects]
 	dictionary['all_images'] = all_images_objects
-	return render_to_response('gallery.htm',dictionary,context_instance=RequestContext(request))
+	return render(request,'gallery.htm',dictionary)
 
 def newsletters(request):
 	dictionary = standard()
 	dictionary['newsletters'] = get_all_newsletter().filter(allowed=True)
-	return render_to_response('newsletter.htm',dictionary,context_instance=RequestContext(request))
+	return render(request,'newsletter.htm',dictionary)
 	
 def writeup(request, name = 'home'):
 	dictionary = standard()
 	dictionary['writeup']=PagesContent.objects.get(link=name)
-	return render_to_response('content.htm',dictionary,context_instance=RequestContext(request))
+	return render(request,'content.htm',dictionary)
 	
 	
 def eventregister(request):
@@ -122,15 +122,15 @@ def eventregister(request):
 			if not (bits_id.endswith('P') or bits_id.endswith('p')):
 				dictionary['form'] = EventForm(request.POST)
 				dictionary['wid'] = True
-				return render_to_response('eventreg.htm',dictionary, context_instance=RequestContext(request))
+				return render(request,'eventreg.htm',dictionary,)
 			if not (len(phone) >= 10 and  phone.isdigit()):
 				dictionary['form'] = EventForm(request.POST)
 				dictionary['nophone'] = True
-				return render_to_response('eventreg.htm',dictionary, context_instance=RequestContext(request))
+				return render(request,'eventreg.htm',dictionary,)
 			if not mailid.isdigit():
 				dictionary['form'] = EventForm(request.POST)
 				dictionary['noemail'] = True
-				return render_to_response('eventreg.htm',dictionary, context_instance=RequestContext(request))
+				return render(request,'eventreg.htm',dictionary,)
 			subject = "ART 2015 Registration"
 			body = make_url(request.get_host(),name,bits_id,phone,bits_email)
 			success = send_mail(subject,body,"embryoclub@gmail.com",[bits_email,],fail_silently = False)
@@ -138,12 +138,12 @@ def eventregister(request):
 			dictionary['name'] = name
 			dictionary['success'] = success
 			#insertRow(name, phone, bits_id, bits_email)
-			return render_to_response('eventreg.htm',dictionary, context_instance=RequestContext(request))
+			return render(request,'eventreg.htm',dictionary,)
 		else:
 			dictionary['form'] = EventForm(request.POST)
 	else:
 		dictionary['form'] = EventForm()
-	return render_to_response('eventreg.htm',dictionary, context_instance=RequestContext(request))
+	return render(request,'eventreg.htm',dictionary,)
 
 def get_from_mail(request):
 	if(request.GET.get('params')):
@@ -157,11 +157,11 @@ def get_from_mail(request):
 		bits_email = request.GET.get('bits_email')
 		insertRow(name, phone_number, bits_id, bits_email)
 		dictionary['name'] = name
-		return render_to_response('regsuccess.htm', dictionary, context_instance=RequestContext(request))
+		return render(request,'regsuccess.htm', dictionary,)
 
 def art_success(request):
 	dictionary = standard()
-	return render_to_response('ethankyou.htm', dictionary, context_instance=RequestContext(request))
+	return render(request,'ethankyou.htm', dictionary,)
 
 	
 def redirect(request):
@@ -177,11 +177,11 @@ def register(request):
 		dictionary['form'] = form
 	else:
 		dictionary['form'] = RegisterForm()
-	return render_to_response('register.htm',dictionary, context_instance=RequestContext(request))
+	return render(request,'register.htm',dictionary,)
 	
 def notfound(request):
 	dictionary = standard()
-	return render_to_response('404.htm',dictionary,context_instance=RequestContext(request))
+	return render(request,'404.htm',dictionary)
 
 def redirector(request):
 	a=str(request.get_full_path())
@@ -198,7 +198,7 @@ def atmosdetail(request,atmos_id):
 	dictionary = standard()
 	dictionary['current_atmos'] = get_atmos(atmos_id)
 				
-	return render_to_response('atmos_specific.htm',dictionary,context_instance=RequestContext(request))
+	return render(request,'atmos_specific.htm',dictionary)
 
 def atmos_list(request,page_id=0):
 	page_id = int(page_id)
@@ -207,13 +207,13 @@ def atmos_list(request,page_id=0):
 	dictionary['all_atmos_lectures'] = get_all_atmos_lectures()[page_id:page_id+5]
 	dictionary['all_discipline'] = Discipline.objects.all()
 											
-	return render_to_response('atmos_list.htm',dictionary,context_instance=RequestContext(request))
+	return render(request,'atmos_list.htm',dictionary)
 
 
 def aic(request):
 	dictionary = standard()
 	dictionary['aic_disciplines'] = AIC_Discipline.objects.all()
-	return render_to_response('aic.htm', dictionary, context_instance=RequestContext(request))
+	return render(request,'aic.htm', dictionary,)
 
 def aic_track(request, discipline_id):
 	discipline_id = int(discipline_id)
@@ -221,7 +221,7 @@ def aic_track(request, discipline_id):
 	dictionary['companies'] = get_companies(discipline_id)
 	dictionary['discipline'] = get_discipline(discipline_id)
 	dictionary['aic_disciplines'] = AIC_Discipline.objects.all()
-	return render_to_response('aic_companies.htm', dictionary, context_instance=RequestContext(request))
+	return render(request,'aic_companies.htm', dictionary,)
 
 def company_details(request, company_id):
 	company_id = int(company_id)
@@ -233,7 +233,7 @@ def company_details(request, company_id):
 	else:
 		dictionary['is_active'] = 1==0
 	dictionary['aic_disciplines'] = AIC_Discipline.objects.all()
-	return render_to_response('company_details.htm', dictionary, context_instance=RequestContext(request))
+	return render(request,'company_details.htm', dictionary,)
 
 def company_register(request, company_id):
 	company_id = int(company_id)
@@ -249,7 +249,7 @@ def company_register(request, company_id):
 			member_one_email = cleaned_form['member_one_email']
 			body = "Hi Team " + str(cleaned_form['team_name']) + "!\n\nYou have successfully registered for the company " + str(dictionary['company']) + ". The following are your details: \n\n" + "Team Name: " + str(cleaned_form['team_name']) + "\nProject Name: " + str(cleaned_form['project_name']) + "\n\nSolution Upload Link: " +  str(make_upload_url(host,cleaned_form['team_name'],cleaned_form['member_one_name'],company_id)) + "\n\nPlease click on the above link to upload your solution. (Only One Member is required to submit the solution.)\n\nRegards,\nBITS Embryo.\nEmail: embryoclub@gmail.com\nContact: Rohan, +91-9660582805."
 			success = send_mail(subject,body,"embryoclub@gmail.com",[cleaned_form['member_one_email'],cleaned_form['member_two_email'],cleaned_form['member_three_email'],cleaned_form['member_four_email'],cleaned_form['member_five_email']],fail_silently = False)
-			return render_to_response('company_register_success.htm', dictionary, context_instance=RequestContext(request))
+			return render(request,'company_register_success.htm', dictionary,)
 	dictionary['register_form'] = AIC_UploadForm()
 	dictionary['submission_date'] = dictionary['company'].submission_date.date()
 	if(dictionary['company'].submission_date.date()>=datetime.datetime.now().date()):
@@ -257,7 +257,7 @@ def company_register(request, company_id):
 	else:
 		dictionary['is_active'] = 1==0
 	dictionary['aic_disciplines'] = AIC_Discipline.objects.all()
-	return render_to_response('company_register.htm', dictionary, context_instance=RequestContext(request))
+	return render(request,'company_register.htm', dictionary,)
 
 def company_upload(request, company_id):
 	company_id = int(company_id)
@@ -296,7 +296,7 @@ def company_thank_you(request, company_id):
 			email.send(fail_silently=False)
 			# Redirect to the document list after POST
 			
-			return render_to_response('company_thank_you.htm', dictionary, context_instance=RequestContext(request))
+			return render(request,'company_thank_you.htm', dictionary,)
 	else:
 		dictionary_temp = dict()
 		dictionary_temp['team_name'] = team_name_render
@@ -306,6 +306,6 @@ def company_thank_you(request, company_id):
 	dictionary['form'] = form
 	
 	dictionary['company_id'] = company_id
-	return render_to_response('company_upload.htm', dictionary, context_instance=RequestContext(request))
+	return render(request,'company_upload.htm', dictionary,)
 
 

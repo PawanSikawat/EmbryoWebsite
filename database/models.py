@@ -8,7 +8,7 @@ def get_upload_path(instance, filename):
 
 class Discipline(models.Model):
 	stream = models.CharField(max_length = 50)
-	def __unicode__(self):
+	def __str__(self):
 		return self.stream
 		
 class Presenter(models.Model):
@@ -19,10 +19,8 @@ class Presenter(models.Model):
     address = HTMLField(blank = True)
     class Meta:
         db_table = u'presenters'
-    def __unicode__(self):
-    #name in actual database contain NoneType in name and can't remove them because this will change the present id but which is used as foreign key
-     a = str(self.name)
-     return unicode(a)
+    def __str__(self):
+    	return self.name
 
 
 class Lecture(models.Model):
@@ -39,7 +37,7 @@ class Lecture(models.Model):
     campus = models.CharField(max_length=50)
     class Meta:
         db_table = u'lectures'
-    def __unicode__(self):
+    def __str__(self):
        return self.topic
     
        
@@ -54,7 +52,7 @@ class Newsletter(models.Model):
 	name = models.CharField(max_length = 150)
 	newsletter = models.FileField(upload_to = ('newsletters'), max_length = 150)
 	allowed = models.BooleanField('Publish on site',default = True)
-	def __unicode__(self):
+	def __str__(self):
 		a= self.newsletter.name
 		a = a.split('/')
 		return a[-1]
@@ -64,7 +62,7 @@ class LecturesDiscipline(models.Model):
 	discipline_id = models.CharField(max_length = 50)
 	class Meta:
 		db_table = u'lec_discipline' 
-	def __unicode__(self):
+	def __str__(self):
 		return unicode(self.lecture_id)
 
 class Event(models.Model):
@@ -72,7 +70,7 @@ class Event(models.Model):
 	allowed = models.BooleanField(default = True)
 	description = HTMLField()
 	name = models.CharField(max_length = 50)
-	def __unicode__(self):
+	def __str__(self):
 		a = self.image.name
 		a = a.split('/')
 		return a[-1]
@@ -90,14 +88,14 @@ class SignUp(models.Model):
 	biography = models.TextField('Short Biography',blank = True)
 	lect_topics = models.TextField('What topics would you like to give the lecture on?*')
 	talk_discipline = models.CharField('Select the Discipline that matches the topics you wish to deliver a talk on', max_length = 50,blank = True,  default='Interdisciplinary')
-	def __unicode__(self):
+	def __str__(self):
 		return "%s %s" % (self.first_name,self.last_name)
 
 class PagesContent(models.Model):
 	name = models.CharField('Page Name', max_length=50)
 	link = models.CharField('Page Link', max_length=50, blank = True)
 	content=HTMLField('Put content of page here')
-	def __unicode__(self):
+	def __str__(self):
 		return self.link
 	class Meta:
 		verbose_name_plural = "Pages Content"
@@ -107,7 +105,7 @@ class Gallery(models.Model):
 	photo = models.ImageField(upload_to = ('images_gallery'),max_length=50)
 	details = models.TextField(blank = True)
 	allowed = models.BooleanField(default = True)
-	def __unicode__(self):
+	def __str__(self):
 		a = self.photo.name
 		a = a.split('/')
 		return a[-1]
@@ -128,13 +126,13 @@ class Atmos(models.Model):
 	campus = models.CharField(max_length=10)
 	class Meta:
 		db_table = u'atmos'
-	def __unicode__(self):
+	def __str__(self):
 		return self.topic
 
 
 class AIC_Discipline(models.Model):
 	stream = models.CharField(max_length = 50)
-	def __unicode__(self):
+	def __str__(self):
 		return self.stream
 
 class AIC_Company(models.Model):
@@ -148,7 +146,7 @@ class AIC_Company(models.Model):
 	allowed = models.BooleanField('Display on site',default = True)
 	class Meta:
 		db_table = u'aic_company_details'
-	def __unicode__(self):
+	def __str__(self):
 		return self.company_name
 
 class AIC_Solution(models.Model):
@@ -166,7 +164,7 @@ class AIC_Solution(models.Model):
 	member_five_email = models.EmailField('Member Five Email   ', blank=True)
 	description = models.TextField('Briefly describe your solution (at max 500 characters.)    ',blank=True)
 	company_discipline = models.CharField('Choose the track under which you are applying for the company*', max_length=50,blank=False,default='Not Applicable')
-	def __unicode__(self):
+	def __str__(self):
 		return self.team_name
 
 class Document(models.Model):

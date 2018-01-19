@@ -17,15 +17,15 @@ class RegisterForm(ModelForm):
 	class Meta:
 		model = SignUp
 		fields = get_var(SignUp)
-		widgets = {
-			'batch':forms.Select(choices = tuple(zip(range(1950,datetime.now().year+1),range(1950,datetime.now().year+1)))),
-			'discipline_first': forms.Select(choices = tuple(zip(Discipline.objects.all(),Discipline.objects.all()))),
-			'discipline_dual': forms.Select(choices = tuple(zip(Discipline.objects.all(),Discipline.objects.all()))),
-			'talk_discipline': forms.Select(choices = tuple(zip(Discipline.objects.all(),Discipline.objects.all())))
-		}
+		# widgets = {
+		# 	'batch':forms.Select(choices = tuple(zip(range(1950,datetime.now().year+1),range(1950,datetime.now().year+1)))),
+		# 	'discipline_first': forms.Select(choices = tuple(zip(Discipline.objects.all(),Discipline.objects.all()))),
+		# 	'discipline_dual': forms.Select(choices = tuple(zip(Discipline.objects.all(),Discipline.objects.all()))),
+		# 	'talk_discipline': forms.Select(choices = tuple(zip(Discipline.objects.all(),Discipline.objects.all())))
+		# }
 class EventForm(forms.Form):
 	name = forms.CharField()
-	bits_id = forms.CharField(label = "BITS ID (eg:2011A1PS554P):")
+	bits_id = forms.CharField(label = "BITS ID (eg:2016B3A20561P):")
 	phone_number = forms.CharField(label = "Phone Number (+91):")
 	#email = forms.EmailField(label = "BITS Email address (f2011554@pilani.bits-pilani.ac.in )")
 
@@ -33,9 +33,9 @@ class AIC_UploadForm(ModelForm):
 	class Meta:
 		model = AIC_Solution
 		fields = get_var(AIC_Solution)
-		widgets = {
-			'company_discipline': forms.Select(choices = tuple(zip(AIC_Discipline.objects.all(),AIC_Discipline.objects.all())))
-		}
+		# widgets = {
+		# 	'company_discipline': forms.Select(choices = tuple(zip(AIC_Discipline.objects.all(),AIC_Discipline.objects.all())))
+		# }
 
 
 class DocumentForm(forms.Form):

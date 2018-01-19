@@ -1,3 +1,6 @@
+{% load static %}
+{% get_media_prefix as MEDIA_URL %}
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -7,7 +10,7 @@
 <meta name="Author" content="Mayank Gupta, Niranjan Godebole, Hasil Sharma, Hrishikesh Mukte, Sumit Binnani, Gyan Prakash Verma" />
 <title>BITS Embryo:{% block title %}{% endblock %}</title>
 
-<link rel="shortcut icon" href="{{MEDIA_URL}}templates/images/favicon.ico"  />
+<link rel="shortcut icon" href="{{ MEDIA_URL }}templates/images/favicon.ico"  />
 <link rel="stylesheet" type="text/css" media="screen" href="{{MEDIA_URL}}templates/css/base.css" />
 <script type="text/javascript" src="{{MEDIA_URL}}templates/jquery/easy_rotator.min.js"></script>
 <script src="{{MEDIA_URL}}templates/js/jquery.js"></script>

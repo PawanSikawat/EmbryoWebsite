@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
 
     # django-admin_tools -> Used for Dashboard in admin homepage
     'admin_tools',
@@ -143,7 +144,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 MEDIA_URL = '/site_media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'/media/template')
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 
 
